@@ -3,6 +3,7 @@ import { Roboto_Mono } from 'next/font/google'
 import "@/app/globals.css";
 import Header from "@/components/Header";
 import { getLocale } from "next-intl/server";
+import { Analytics } from '@vercel/analytics/react';
 
 const roboto = Roboto_Mono({ weight: ['100', '400', '700'] ,subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default async function RootLayout({
       <body className={`bg-[#F2EDF6] flex flex-col items-center justify-center w-screen`}>
         <Header />
         {children}
+        <Analytics />
       </body>
     </html>
   );
