@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import Header from "@/components/Header";
 import { getLocale } from "next-intl/server";
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const roboto = Roboto_Mono({ weight: ['100', '400', '700'] ,subsets: ['latin'] });
 
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <Header />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
