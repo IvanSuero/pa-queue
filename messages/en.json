@@ -1,0 +1,23 @@
+{
+  "title": "Port Aventura wait times",
+  "description": "Wait times for the attractions of Port Aventura",
+  "searchRide": "Search ride...",
+  "waitTime": "Wait time",
+  "rideStatus": "Ride status",
+  "park": "Park",
+  "all": "All",
+  "short": "Short (< 15min)",
+  "medium": "Medium (15-40min)",
+  "long": "Long (> 40min)",
+  "closed": "Closed",
+  "open": "Open",
+  "madeBy": "Made by",
+  "poweredBy": "Powered by",
+  "updated": "Updated",
+  "waitTimeUnderAverage": "Wait time under average",
+  "rideIsClosed": "Ride is closed",
+  "longWaitTime": "Long wait time",
+  "en": "English",
+  "es": "Spanish",
+  "ago": "ago"
+}

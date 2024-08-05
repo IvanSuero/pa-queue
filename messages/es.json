@@ -1,0 +1,23 @@
+{
+  "title": "Tiempos espera Port Aventura",
+  "description": "Tiempo de espera en las atracciones de Port Aventura",
+  "searchRide": "Buscar atracción...",
+  "waitTime": "Tiempo de espera",
+  "rideStatus": "Estado de la atracción",
+  "park": "Parque",
+  "all": "Todo",
+  "short": "Corto (< 15min)",
+  "medium": "Medio (15-40min)",
+  "long": "Largo (> 40min)",
+  "closed": "Cerrado",
+  "open": "Abierto",
+  "updated": "Actualizado hace",
+  "madeBy": "Hecho por",
+  "poweredBy": "Impulsado por",
+  "waitTimeUnderAverage": "Tiempo de espera menor a la media",
+  "rideIsClosed": "La atracción está cerrada",
+  "longWaitTime": "Tiempo de espera largo",
+  "en": "Inglés",
+  "es": "Español",
+  "ago": ""
+}

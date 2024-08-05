@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+DONE Filtro por tiempo espera, abierta/cerrada
+DONE Barra de busqueda
 
-## Getting Started
+- Notificaciones en tiempo real (marcar favorito en localstorage y recibir news de estas atracciones)
+DONE Estado del tiempo
+DONE Traducciones
+DONE Responsive
 
-First, run the development server:
+const requestNotificationPermission = async () => {
+    if ('Notification' in window && navigator.serviceWorker) {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+      } else {
+        console.log('Notification permission denied.');
+      }
+    }
+  };
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  const checkRideStatus = async (favoriteRides: []) => {
+    const getRideStatus = async (rideId: number) => {
+      return {
+        id: rideId,
+        waitingTime: ride.wait_time,
+        isOpen: ride.is_open,
+      };
+    };
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    for (const rideId of favoriteRides) {
+      const rideStatus = await getRideStatus(rideId);
+      const previousStatus = getPreviousRideStatus(rideId);
+      if (rideStatus.waitingTime !== previousStatus.waitingTime || rideStatus.isOpen !== previousStatus.isOpen) {
+        sendNotification(`Ride Update: ${rideStatus.id}`,
+          `Waiting time: ${rideStatus.waitingTime} minutes, Status: ${rideStatus.isOpen ? 'Open' : 'Closed'}`);
+        updatePreviousRideStatus(rideId, rideStatus);
+      }
+    }
+  };
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  const sendNotification = (title: string, body: string) => {
+    if (Notification.permission === 'granted' && navigator.serviceWorker) {
+      navigator.serviceWorker.ready.then(registration => {
+        registration.showNotification(title, {
+          body: body,
+          icon: '/path/to/icon.png',
+        });
+      });
+    }
+  };
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+  const getPreviousRideStatus = (rideId: number) => {
+    const rideStatus = localStorage.getItem(`rideStatus_${rideId}`);
+    return rideStatus ? JSON.parse(rideStatus) : {};
+  };
+  
+  const updatePreviousRideStatus = (rideId: number, status: {id: number, waitingTime: number, isOpen: boolean}) => {
+    localStorage.setItem(`rideStatus_${rideId}`, JSON.stringify(status));
+  };
 
-## Learn More
+  useEffect(() => {
+    requestNotificationPermission();
 
-To learn more about Next.js, take a look at the following resources:
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      }).catch(err => {
+        console.log('Service Worker registration failed:', err);
+      });
+    }
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    const favoriteRides = JSON.parse(localStorage.getItem('favRides') || '[]');
+    const intervalId = setInterval(() => checkRideStatus(favoriteRides), 60000);
+    return () => clearInterval(intervalId);
+  }, []);
